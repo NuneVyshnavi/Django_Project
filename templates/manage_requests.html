@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Manage Requests</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="container mt-5">
+
+    <h1 class="mb-5">
+        Manage NGO Requests
+    </h1>
+
+    <table class="table table-bordered">
+
+        <thead>
+
+            <tr>
+
+                <th>Food</th>
+
+                <th>NGO</th>
+
+                <th>Phone</th>
+
+                <th>Status</th>
+
+                <th>Action</th>
+
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            {% for request in requests %}
+
+            <tr>
+
+                <td>
+                    {{ request.donation.food_name }}
+                </td>
+
+                <td>
+                    {{ request.ngo_name }}
+                </td>
+
+                <td>
+                    {{ request.phone }}
+                </td>
+
+                <td>
+
+                   {% if request.status == 'Pending' %}
+
+<span class="badge bg-warning">
+    Pending
+</span>
+
+{% elif request.status == 'Accepted' %}
+
+<span class="badge bg-success">
+    Accepted
+</span>
+
+{% else %}
+
+<span class="badge bg-danger">
+    Rejected
+</span>
+
+{% endif %}
+
+                </td>
+
+                <td>
+
+                    <a
+                        href="/accept-request/{{ request.id }}/"
+                        class="btn btn-success btn-sm"
+                    >
+                        Accept
+                    </a>
+
+                    <a
+                        href="/reject-request/{{ request.id }}/"
+                        class="btn btn-danger btn-sm"
+                    >
+                        Reject
+                    </a>
+
+                </td>
+
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+</body>
+
+</html>
