@@ -1,151 +1,59 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-
     <title>Food Donation System</title>
 
-    <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-        rel="stylesheet"
-    >
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
 </head>
 
-<body style="background-color:#f5f5f5;">
-    <nav class="navbar navbar-dark bg-dark">
-
-    <div class="container-fluid">
-
-        <span class="navbar-brand mb-0 h1">
-            Food Donation System
-        </span>
-
-    </div>
-
-</nav>
-
-<!-- LOGOUT BUTTON -->
-
-<div class="container mt-3 text-end">
-
-    <a
-        href="/logout/"
-        class="btn btn-danger"
-    >
-        Logout
-    </a>
-
-</div>
+<body style="background-color:#f8f9fa;">
 
 <div class="container mt-4">
 
-    <h1 class="text-center mb-5">
-        Food Donation & Surplus Management System
-    </h1>
-    <h4 class="text-center mb-4">
-
-    Total Donations:
-    {{ total_donations }}
-
-</h4>
-    <form method="GET" class="mb-5">
-
-    <div class="row">
-
-        <div class="col-md-7">
-
-            <input
-                type="text"
-                name="search"
-                class="form-control"
-                placeholder="Search food..."
-            >
-
-        </div>
-
-        <div class="col-md-2">
-
-            <button class="btn btn-dark w-100">
-                Search
-            </button>
-
-        </div>
-
+    <!-- HEADER -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Food Donation System</h2>
+        <a href="/logout/" class="btn btn-danger">Logout</a>
     </div>
 
-</form>
-    <div class="col-md-3">
+    <h4 class="text-center mb-4">
+        Food Donation & Surplus Management System
+    </h4>
 
-    <select
-        name="category"
-        class="form-control"
-    >
-
-        <option value="">
-            All Categories
-        </option>
-
-        <option value="Rice">
-            Rice
-        </option>
-
-        <option value="Biryani">
-            Biryani
-        </option>
-
-        <option value="Vegetables">
-            Vegetables
-        </option>
-
-        <option value="Bakery">
-            Bakery
-        </option>
-
-        <option value="Fruits">
-            Fruits
-        </option>
-
-    </select>
-
-</div>
+    <!-- SEARCH -->
+    <form method="GET" class="mb-4">
+        <div class="row">
+            <div class="col-md-10">
+                <input type="text" name="search" class="form-control" placeholder="Search food...">
+            </div>
+            <div class="col-md-2">
+                <button class="btn btn-dark w-100">Search</button>
+            </div>
+        </div>
+    </form>
 
     <div class="row">
 
-        <!-- DONATION FORM -->
-
+        <!-- LEFT SIDE (FORM) -->
         <div class="col-md-4">
 
-            <div class="card shadow p-4 mb-4">
+            <div class="card p-3 shadow mb-4">
+                <h5>Add Food Donation</h5>
 
-                <h3 class="mb-4">
-                    Add Food Donation
-                </h3>
-
-                <form
-                    method="POST"
-                    enctype="multipart/form-data"
-                >
-
+                <form method="POST" enctype="multipart/form-data">
                     {% csrf_token %}
-
                     {{ donation_form.as_p }}
 
-                    <button
-                        class="btn btn-success w-100"
-                        name="donate_food"
-                    >
+                    <button class="btn btn-success w-100" name="donate_food">
                         Donate Food
                     </button>
-
                 </form>
-
             </div>
 
         </div>
 
-        <!-- DONATION CARDS -->
-
+        <!-- RIGHT SIDE (DONATIONS) -->
         <div class="col-md-8">
 
             <div class="row">
@@ -154,69 +62,35 @@
 
                 <div class="col-md-6">
 
-                    <div class="card mb-4 shadow">
+                    <div class="card shadow mb-4">
 
                         {% if donation.image %}
-
-                        <img
-                            src="{{ donation.image.url }}"
-                            class="card-img-top"
-                            height="250"
-                            style="object-fit:cover;"
-                        >
-
+                        <img src="{{ donation.image.url }}" class="card-img-top" height="200" style="object-fit:cover;">
                         {% endif %}
 
                         <div class="card-body">
 
-                            <h3>
-                                {{ donation.food_name }}
-                            </h3>
-                            <p>
-                                <strong>Category:</strong>
-                                {{ donation.category }}
-                            </p>
+                            <h5>{{ donation.food_name }}</h5>
 
-                            <p>
-                                <strong>Quantity:</strong>
-                                {{ donation.quantity }}
-                            </p>
-
-                            <p>
-                                <strong>Description:</strong>
-                                {{ donation.description }}
-                            </p>
-
-                            <p>
-                                <strong>Expiry:</strong>
-                                {{ donation.expiry_time }}
-                            </p>
+                            <p><b>Category:</b> {{ donation.category }}</p>
+                            <p><b>Quantity:</b> {{ donation.quantity }}</p>
+                            <p><b>Description:</b> {{ donation.description }}</p>
+                            <p><b>Expiry:</b> {{ donation.expiry_time }}</p>
 
                             <hr>
 
-                            <h5 class="mb-3">
-                                Request Food
-                            </h5>
+                            <h6>Request Food</h6>
 
                             <form method="POST">
-
                                 {% csrf_token %}
 
-                                <input
-                                    type="hidden"
-                                    name="donation_id"
-                                    value="{{ donation.id }}"
-                                >
+                                <input type="hidden" name="donation_id" value="{{ donation.id }}">
 
                                 {{ request_form.as_p }}
 
-                                <button
-                                    class="btn btn-primary w-100"
-                                    name="request_food"
-                                >
-                                    Request Food
+                                <button class="btn btn-primary w-100" name="request_food">
+                                    Request
                                 </button>
-
                             </form>
 
                         </div>
@@ -225,6 +99,8 @@
 
                 </div>
 
+                {% empty %}
+                <p>No donations found</p>
                 {% endfor %}
 
             </div>
@@ -234,37 +110,6 @@
     </div>
 
 </div>
-<div class="text-center mb-5">
-
-    {% if donations.has_previous %}
-
-        <a
-            href="?page={{ donations.previous_page_number }}"
-            class="btn btn-dark"
-        >
-            Previous
-        </a>
-
-    {% endif %}
-
-    {% if donations.has_next %}
-
-        <a
-            href="?page={{ donations.next_page_number }}"
-            class="btn btn-dark"
-        >
-            Next
-        </a>
-
-    {% endif %}
-
-</div>
-<footer class="bg-dark text-white text-center p-3 mt-5">
-
-    © 2026 Food Donation & Surplus Management System
-
-</footer>
 
 </body>
-
 </html>
